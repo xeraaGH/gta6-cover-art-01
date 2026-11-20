@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vice Cover Studio — GTA-style cover art maker</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="app">
+  <section class="controls" aria-label="Cover controls">
+    <h1>Vice Cover Studio</h1>
+    <p class="tagline">Your photo, GTA-style cover art. Pick a layout, drop in photos, write a caption, export a PNG.</p>
+
+    <fieldset>
+      <legend>1 · Photos</legend>
+      <label class="file">Add your photos <input id="photoFiles" type="file" accept="image/*" multiple></label>
+      <div class="samples" id="samples">
+        <button type="button" data-sample="boulevard"><img src="samples/boulevard.jpg" alt="Boulevard sunset sample"><span>Boulevard</span></button>
+        <button type="button" data-sample="pier"><img src="samples/pier.jpg" alt="Pier sample"><span>Pier</span></button>
+      </div>
+      <p class="hint">Click a photo below to fill the selected panel.</p>
+      <div class="library" id="library"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>2 · Layout &amp; size</legend>
+      <div class="choices" id="layoutChoices">
+        <button type="button" data-layout="poster" class="active"><svg viewBox="0 0 44 30" aria-hidden="true"><rect x="1" y="1" width="13" height="28"/><rect x="15" y="1" width="13" height="28"/><rect x="29" y="1" width="13" height="28"/></svg>Poster</button>
+        <button type="button" data-layout="grid"><svg viewBox="0 0 44 30" aria-hidden="true"><rect x="1" y="1" width="20" height="13"/><rect x="23" y="1" width="20" height="13"/><rect x="1" y="16" width="20" height="13"/><rect x="23" y="16" width="20" height="13"/></svg>Grid</button>
+        <button type="button" data-layout="hero"><svg viewBox="0 0 44 30" aria-hidden="true"><rect x="1" y="1" width="26" height="28"/><rect x="29" y="1" width="14" height="13"/><rect x="29" y="16" width="14" height="13"/></svg>Hero</button>
+      </div>
+      <div class="choices" id="sizeChoices">
+        <button type="button" data-size="1080x1080">1080 × 1080</button>
+        <button type="button" data-size="1080x1350">1080 × 1350</button>
+        <button type="button" data-size="1920x1080" class="active">1920 × 1080</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>3 · Grade &amp; caption</legend>
+      <div class="choices" id="gradeChoices">
+        <button type="button" data-grade="sunset" class="active">Sunset</button>
+        <button type="button" data-grade="neon">Neon</button>
+        <button type="button" data-grade="none">None</button>
+      </div>
+      <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
+      <div class="row">
+        <label>Position
+          <select id="captionPos"><option value="bottom">Bottom</option><option value="top">Top</option></select>
+        </label>
+        <label>Size <input id="captionSize" type="range" min="0.6" max="1.6" step="0.05" value="1"></label>
+      </div>
+      <div class="swatches" id="captionColors">
+        <button type="button" data-color="#ffffff" class="active" style="--c:#ffffff" aria-label="White caption"></button>
+        <button type="button" data-color="#ffe14d" style="--c:#ffe14d" aria-label="Yellow caption"></button>
+        <button type="button" data-color="#ff5da2" style="--c:#ff5da2" aria-label="Pink caption"></button>
+        <button type="button" data-color="#39e6ff" style="--c:#39e6ff" aria-label="Cyan caption"></button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>4 · Selected panel</legend>
+      <p class="hint" id="panelLabel">Panel 1 of 3 — click a panel in the preview, drag it to move the photo.</p>
+      <label>Zoom <input id="zoom" type="range" min="1" max="2.5" step="0.05" value="1"></label>
+      <button id="resetCrop" type="button">Reset crop</button>
+    </fieldset>
+
+    <button id="export" type="button" class="export">Export PNG</button>
+    <p id="status" role="status"></p>
+  </section>
+
+  <section class="stage">
+    <div class="preview-wrap">
+      <canvas id="cover" width="1920" height="1080" aria-label="Live cover preview"></canvas>
+    </div>
+    <div class="exported" id="exportedBox" hidden>
+      <h2>Your cover</h2>
+      <img id="exportedImg" alt="Your exported cover">
+      <a id="downloadLink" href="#" download="cover.png">Download PNG</a>
+    </div>
+  </section>
+</main>
+<div id="shotView" hidden><img id="shotImgEl" alt="Exported cover"></div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
